@@ -14,7 +14,7 @@ func splitOnSpace(x string) []string {
 	pi := 0
 	ps := false
 	for i, c := range x {
-		s := unicode.IsSpace(c)
+		s := unicode.IsSpace(c)||unicode.IsPunct(c)
 		if s != ps && i > 0 {
 			result = append(result, x[pi:i])
 			pi = i
@@ -28,6 +28,10 @@ func splitOnSpace(x string) []string {
 func wordWrap(m measureStringer, s string, width float64) []string {
 	var result []string
 	for _, line := range strings.Split(s, "\n") {
+		if strings.TrimSpace(line) == "" {
+			result = append(result, line)
+			continue
+		}
 		fields := splitOnSpace(line)
 		if len(fields)%2 == 1 {
 			fields = append(fields, "")
